@@ -4,8 +4,8 @@ import time
 from io import BytesIO
 from datetime import datetime
 
-#from reportlab.platypus import SimpleDocTemplate, Paragraph
-#from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.platypus import SimpleDocTemplate, Paragraph
+from reportlab.lib.styles import getSampleStyleSheet
 
 from pdf_reader import extract_text
 from text_splitter import split_text
@@ -19,6 +19,12 @@ from insights import generate_document_insights
 
 #st.write("LangChain Google GenAI:", langchain_google_genai.__version__)
 #st.write("Google GenAI:", google.genai.__version__)
+
+st.set_page_config(
+    page_title="AI Document Q&A Assistant",
+    page_icon="📄",
+    layout="wide"
+)
 
 # -------------------------------
 # Create PDF Chat Export
@@ -80,11 +86,6 @@ def create_chat_pdf(messages):
 
     return buffer
 
-st.set_page_config(
-    page_title="AI Document Q&A Assistant",
-    page_icon="📄",
-    layout="wide"
-)
 
 # -------------------------------
 # Session State

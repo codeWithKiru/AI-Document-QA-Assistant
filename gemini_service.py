@@ -2,18 +2,14 @@ import os
 
 from dotenv import load_dotenv
 from langchain_google_genai import ChatGoogleGenerativeAI
-import streamlit as st
+#import streamlit as st
 
 load_dotenv()
 
 # Get API Key
 api_key = os.getenv("GOOGLE_API_KEY")
 
-# Display first 10 characters of API Key for debugging
-if api_key:
-    st.write("🔑 API Key:", api_key[:10] + "...")
-else:
-    st.error("❌ GOOGLE_API_KEY not found!")
+
 
 # Initialize Gemini
 llm = ChatGoogleGenerativeAI(
