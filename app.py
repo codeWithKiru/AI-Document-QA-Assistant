@@ -4,8 +4,8 @@ import time
 from io import BytesIO
 from datetime import datetime
 
-from reportlab.platypus import SimpleDocTemplate, Paragraph
-from reportlab.lib.styles import getSampleStyleSheet
+#from reportlab.platypus import SimpleDocTemplate, Paragraph
+#from reportlab.lib.styles import getSampleStyleSheet
 
 from pdf_reader import extract_text
 from text_splitter import split_text
