@@ -77,7 +77,7 @@ Answer:
 
     except Exception as e:
 
-        return f"ERROR:\n{str(e)}"
+        raise
 
         #error = str(e)
 
