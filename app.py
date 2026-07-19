@@ -14,6 +14,12 @@ from gemini_service import generate_answer
 from suggestions import generate_suggested_questions
 from insights import generate_document_insights
 
+import langchain_google_genai
+import google.genai
+
+st.write("LangChain Google GenAI:", langchain_google_genai.__version__)
+st.write("Google GenAI:", google.genai.__version__)
+
 # -------------------------------
 # Create PDF Chat Export
 # -------------------------------
