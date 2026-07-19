@@ -1,21 +1,29 @@
 import os
 
 from dotenv import load_dotenv
-
 from langchain_google_genai import ChatGoogleGenerativeAI
-from langchain_core.messages import HumanMessage
+import streamlit as st
 
 load_dotenv()
 
+# Get API Key
+api_key = os.getenv("GOOGLE_API_KEY")
+
+# Display first 10 characters of API Key for debugging
+if api_key:
+    st.write("🔑 API Key:", api_key[:10] + "...")
+else:
+    st.error("❌ GOOGLE_API_KEY not found!")
+
+# Initialize Gemini
 llm = ChatGoogleGenerativeAI(
     model="gemini-2.5-flash-preview-05-20",
-    google_api_key=os.getenv("GOOGLE_API_KEY"),
+    google_api_key=api_key,
     temperature=0.3
 )
 
 
 def generate_answer(question, chunks, chat_history=None):
-
     context = "\n\n".join(
         [chunk["text"] for chunk in chunks]
     )
@@ -23,11 +31,8 @@ def generate_answer(question, chunks, chat_history=None):
     history = ""
 
     if chat_history:
-
         for message in chat_history[-6:]:
-
             role = "User" if message["role"] == "user" else "Assistant"
-
             history += f"{role}: {message['content']}\n"
 
     prompt = f"""
@@ -72,22 +77,7 @@ Answer:
 
     try:
         response = llm.invoke(prompt)
-
         return response.content
 
-    except Exception as e:
-
+    except Exception:
         raise
-
-        #error = str(e)
-
-        #if "429" in error:
-           # return "⚠️ Daily Gemini API quota reached. Please try again later."
-
-        #elif "404" in error:
-           # return "⚠️ Gemini model not found."
-
-        #elif "connection" in error.lower():
-            #return "⚠️ Unable to connect to Gemini."
-
-        #return "⚠️ Something went wrong. Please try again later."
