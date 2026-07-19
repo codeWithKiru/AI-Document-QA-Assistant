@@ -14,11 +14,11 @@ from gemini_service import generate_answer
 from suggestions import generate_suggested_questions
 from insights import generate_document_insights
 
-import langchain_google_genai
-import google.genai
+#import langchain_google_genai
+#import google.genai
 
-st.write("LangChain Google GenAI:", langchain_google_genai.__version__)
-st.write("Google GenAI:", google.genai.__version__)
+#st.write("LangChain Google GenAI:", langchain_google_genai.__version__)
+#st.write("Google GenAI:", google.genai.__version__)
 
 # -------------------------------
 # Create PDF Chat Export
@@ -175,13 +175,13 @@ with st.sidebar:
                 else:
                     st.session_state.chat_title = f"{len(uploaded_files)} Documents"
 
-                #st.session_state.suggested_questions = (
-                #   generate_suggested_questions(chunks)
-                #)
+                st.session_state.suggested_questions = (
+                   generate_suggested_questions(chunks)
+                )
 
-                #st.session_state.document_insights = (
-                #   generate_document_insights(chunks)
-                #)
+                st.session_state.document_insights = (
+                   generate_document_insights(chunks)
+                )
 
             st.success("✅ Documents processed successfully!")
             st.info("💬 Your documents are ready. You can now ask questions below.")
