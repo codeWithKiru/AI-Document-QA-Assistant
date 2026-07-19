@@ -71,10 +71,7 @@ Answer:
 """
 
     try:
-
-        response = llm.invoke(
-            [HumanMessage(content=prompt)]
-        )
+        response = llm.invoke(prompt)
 
         return response.content
 
