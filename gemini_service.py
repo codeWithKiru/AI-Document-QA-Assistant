@@ -75,5 +75,5 @@ Answer:
         response = llm.invoke(prompt)
         return response.content
 
-    except Exception:
-        raise
+    except Exception as e:
+        return f"Error: {e}"

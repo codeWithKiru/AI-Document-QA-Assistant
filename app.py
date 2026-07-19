@@ -176,13 +176,17 @@ with st.sidebar:
                 else:
                     st.session_state.chat_title = f"{len(uploaded_files)} Documents"
 
-                st.session_state.suggested_questions = (
-                   generate_suggested_questions(chunks)
-                )
+                #st.session_state.suggested_questions = (
+                #  generate_suggested_questions(chunks)
+                #)
 
-                st.session_state.document_insights = (
-                   generate_document_insights(chunks)
-                )
+                #st.session_state.document_insights = (
+                #   generate_document_insights(chunks)
+                #)
+
+                st.session_state.suggested_questions = []
+
+                st.session_state.document_insights = ""
 
             st.success("✅ Documents processed successfully!")
             st.info("💬 Your documents are ready. You can now ask questions below.")
