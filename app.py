@@ -1,3 +1,10 @@
+import asyncio
+
+try:
+    asyncio.get_event_loop()
+except RuntimeError:
+    asyncio.set_event_loop(asyncio.new_event_loop())
+
 import streamlit as st
 import time
 
@@ -98,7 +105,6 @@ defaults = {
     "total_documents": 0,
     "total_pages": 0,
     "total_chunks": 0,
-    "question_count": 0,
     "suggested_questions": [],
     "document_insights": "",
     "chat_title": "New Chat",
@@ -132,7 +138,7 @@ with st.sidebar:
         # Reset everything related to the current chat
         st.session_state.messages = []
         st.session_state.chat_title = "New Chat"
-        st.session_state.question_count = 0
+        
 
         st.session_state.uploaded = False
         st.session_state.vector_store = None
@@ -169,20 +175,20 @@ with st.sidebar:
                 st.session_state.total_documents = len(uploaded_files)
                 st.session_state.total_pages = len(pages)
                 st.session_state.total_chunks = len(chunks)
-                st.session_state.question_count = 0
+               
 
                 if len(uploaded_files) == 1:
                     st.session_state.chat_title = uploaded_files[0].name
                 else:
                     st.session_state.chat_title = f"{len(uploaded_files)} Documents"
 
-                #st.session_state.suggested_questions = (
-                #  generate_suggested_questions(chunks)
-                #)
+                st.session_state.suggested_questions = (
+                  generate_suggested_questions(chunks)
+                )
 
-                #st.session_state.document_insights = (
-                #   generate_document_insights(chunks)
-                #)
+                st.session_state.document_insights = (
+                   generate_document_insights(chunks)
+                )
 
                 st.session_state.suggested_questions = []
 
@@ -209,7 +215,7 @@ with st.sidebar:
 
         st.session_state.messages = []
         
-        st.session_state.question_count = 0
+    
 
         st.rerun()
 
@@ -247,10 +253,7 @@ with st.sidebar:
 
                     st.session_state.messages = chat["messages"].copy()
                     st.session_state.chat_title = chat["title"]
-                    st.session_state.question_count = sum(
-                        1 for msg in chat["messages"]
-                        if msg["role"] == "user"
-                    )
+                    
 
                     st.rerun()
 
@@ -288,7 +291,13 @@ col1, col2, col3, col4 = st.columns(4)
 col1.metric("📄 Documents", st.session_state.total_documents)
 col2.metric("📑 Pages", st.session_state.total_pages)
 col3.metric("🧩 Chunks", st.session_state.total_chunks)
-col4.metric("💬 Questions", st.session_state.question_count)
+
+question_count = sum(
+    1 for msg in st.session_state.messages
+    if msg["role"] == "user"
+)
+
+col4.metric("💬 Questions", question_count)
 
 st.divider()
 
@@ -348,13 +357,14 @@ for message in st.session_state.messages:
 # -------------------------------
 # Quick AI Actions
 # -------------------------------
+
+selected_prompt = None
+
 actions_disabled = not st.session_state.uploaded
 
 st.subheader("⚡ Quick AI Actions")
 
 col1, col2, col3, col4, col5 = st.columns(5)
-
-selected_prompt = None
 
 with col1:
 
@@ -412,22 +422,22 @@ if st.session_state.suggested_questions:
 
                 selected_prompt = q
 
+user_question = st.chat_input(
+    "Ask a question about your document...",
+    disabled=not st.session_state.uploaded
+)
+
+question = selected_prompt if selected_prompt else user_question    
+
 st.divider()
 
 # -------------------------------
 # Chat Input
 # -------------------------------
 
-user_question = st.chat_input(
-    "Ask a question about your document...",
-    disabled=not st.session_state.uploaded
-)
-
-question = selected_prompt if selected_prompt else user_question
-
 if question:
 
-    st.session_state.question_count += 1
+    
 
     if not st.session_state.uploaded:
 
@@ -446,6 +456,7 @@ if question:
                 "time": current_time
             }
         )
+        st.rerun()
 
         with st.chat_message("user"):
 

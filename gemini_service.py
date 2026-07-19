@@ -13,7 +13,7 @@ api_key = os.getenv("GOOGLE_API_KEY")
 
 # Initialize Gemini
 llm = ChatGoogleGenerativeAI(
-    model="gemini-2.0-flash",
+    model="gemini-flash-latest",
     google_api_key=api_key,
     temperature=0.3
 )
@@ -76,4 +76,4 @@ Answer:
         return response.content
 
     except Exception as e:
-        return f"Error: {e}"
+        return f"⚠️ Gemini API Error:\n\n{str(e)}"

@@ -6,6 +6,9 @@ load_dotenv()
 
 client = genai.Client(api_key=os.getenv("GOOGLE_API_KEY"))
 
-for model in client.models.list():
-    if "generateContent" in getattr(model, "supported_actions", []):
-        print(model.name)
+response = client.models.generate_content(
+    model="gemini-flash-latest",
+    contents="Say hello in one sentence."
+)
+
+print(response.text)
