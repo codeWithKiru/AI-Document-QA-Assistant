@@ -80,15 +80,17 @@ Answer:
 
     except Exception as e:
 
-        error = str(e)
+        return f"ERROR:\n{str(e)}"
 
-        if "429" in error:
-            return "⚠️ Daily Gemini API quota reached. Please try again later."
+        #error = str(e)
 
-        elif "404" in error:
-            return "⚠️ Gemini model not found."
+        #if "429" in error:
+           # return "⚠️ Daily Gemini API quota reached. Please try again later."
 
-        elif "connection" in error.lower():
-            return "⚠️ Unable to connect to Gemini."
+        #elif "404" in error:
+           # return "⚠️ Gemini model not found."
 
-        return "⚠️ Something went wrong. Please try again later."
+        #elif "connection" in error.lower():
+            #return "⚠️ Unable to connect to Gemini."
+
+        #return "⚠️ Something went wrong. Please try again later."
